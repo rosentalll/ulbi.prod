@@ -5,13 +5,13 @@ export default function MySelect(
         options, 
         defaultValue = "Сортировка", 
         value, 
-        handleChange 
+        sortPosts 
 }) {
     return (
         <select 
             value={value} 
             onChange={
-                e => handleChange(e.target.value)
+                e => sortPosts(e.target.value)
             }
         >
             <option value="" disabled>
@@ -23,7 +23,7 @@ export default function MySelect(
                         value={o.value} 
                         key={o.value}
                     >
-                        {o.name}
+                        {o.label}
                     </option>
                 )
             }

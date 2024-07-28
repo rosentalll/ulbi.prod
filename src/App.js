@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import Posts from "./components/Posts";
 import Form from "./components/Form";
 import MySelect from "./components/UI/select/MySelect"
+import MyInput from "./components/UI/input/MyInput";
 
 export default function App() {
 
   const [posts, setPosts] = useState([])
-
-  const [sortingCriteria, setSortingCriteria] = useState('')
+  const [criteria, setCriteria] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   function createPost(post) {
     setPosts(
@@ -25,20 +26,20 @@ export default function App() {
   function removePost(id) {
     setPosts(
       posts.filter(
-        post => post.id !== id
+        post => 
+          post.id !== id
       )
     )
   }
 
-  function sortPosts(criteria) {
-    setSortingCriteria(criteria)
-    console.log(sortingCriteria)
-    // setPosts(
-    //   [...posts].sort(
-    //     (a, b) => 
-    //       a[sort].localeCompare(b[sort])
-    //   )
-    // )
+  function sortPosts(value) {
+    setCriteria(value)
+    setPosts(
+      [...posts].sort(
+        (a, b) => 
+          a[value].localeCompare(b[value])
+      )
+    )
   }
 
   return (
@@ -47,13 +48,18 @@ export default function App() {
       <Form createPost={createPost} />
       <hr className="line" />
       <div>
-        <MySelect
-          value={sortingCriteria}
-          handleChange={sortPosts}
+        <MyInput 
+          placeholder="Поиск..." 
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+        />
+        <MySelect 
+          value={criteria}
+          sortPosts={sortPosts}
           defaultValue="Сортировка"
           options={[
-            {value: "title", name: "По названию"},
-            {value: "content", name: "По описанию"}
+            {value: "title", label: "По заголовку"},
+            {value: "content", label: "По содержанию"}
           ]}
         />
       </div>
