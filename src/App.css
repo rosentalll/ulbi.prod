@@ -1,0 +1,24 @@
+.App {
+  width: 800px;
+}
+
+.title {
+  text-align: center;
+}
+
+.title-2 {
+  text-align: center;
+}
+
+.line {
+  margin: 15px 0;
+}
+
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid teal;
+  margin: 15px 0 0 0;
+}
