@@ -9,6 +9,7 @@ export default function PostItem(
         removePost 
     }
 ) {
+    console.log(id)
     return (
         <li className="post" key={id}>
             <div className="post-content">

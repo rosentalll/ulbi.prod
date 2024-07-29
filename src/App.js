@@ -3,15 +3,17 @@ import React, { useState, useMemo } from "react";
 import Posts from "./components/Posts";
 import Form from "./components/Form";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/modal/MyModal";
+import MyButton from "./components/UI/button/MyButton";
 
 export default function App() {
 
   const [posts, setPosts] = useState( [] )
   const [filter, setFilter] = useState( {sort: "", query: ""} )
+  const [visible, setVisible] = useState(false)
 
   const sortedPosts = useMemo(
     () => {
-      console.log('worked')
       if (filter.sort) {
         return (
           [...posts].sort(
@@ -26,6 +28,7 @@ export default function App() {
 
   const sortedAndSearchedPosts = useMemo(
     () => {
+      console.log('сработал')
       return sortedPosts.filter(
         post => 
           post.title
@@ -45,6 +48,7 @@ export default function App() {
         }
       ]
     )
+    setVisible(false)
   }
 
   function removePost(id) {
@@ -58,8 +62,21 @@ export default function App() {
 
   return (
     <div className="App">
+      <MyButton 
+        style={{margin: "top"}}
+        onClick={
+          () => setVisible(true)
+        } 
+      >
+        Создать пользователя
+      </MyButton>
+      <MyModal 
+        visible={visible}
+        setVisible={setVisible}
+      >
+        <Form createPost={createPost} />
+      </MyModal>
       <h1 className="title">Список постов</h1>
-      <Form createPost={createPost} />
       <hr className="line" />
       <PostFilter 
         filter={filter}
