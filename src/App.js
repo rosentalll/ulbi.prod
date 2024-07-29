@@ -1,15 +1,39 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Posts from "./components/Posts";
 import Form from "./components/Form";
-import MySelect from "./components/UI/select/MySelect"
-import MyInput from "./components/UI/input/MyInput";
+import PostFilter from "./components/PostFilter";
 
 export default function App() {
 
-  const [posts, setPosts] = useState([])
-  const [criteria, setCriteria] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [posts, setPosts] = useState( [] )
+  const [filter, setFilter] = useState( {sort: "", query: ""} )
+
+  const sortedPosts = useMemo(
+    () => {
+      console.log('worked')
+      if (filter.sort) {
+        return (
+          [...posts].sort(
+            (a, b) => 
+              a[filter.sort].localeCompare(b[filter.sort]))
+        )
+      } else {
+        return posts
+      }
+    }, [filter.sort,  posts]
+  )
+
+  const sortedAndSearchedPosts = useMemo(
+    () => {
+      return sortedPosts.filter(
+        post => 
+          post.title
+            .toLowerCase()
+            .includes(filter.query)
+      )
+    }, [filter.query, sortedPosts]
+  )
 
   function createPost(post) {
     setPosts(
@@ -32,45 +56,19 @@ export default function App() {
     )
   }
 
-  function sortPosts(value) {
-    setCriteria(value)
-    setPosts(
-      [...posts].sort(
-        (a, b) => 
-          a[value].localeCompare(b[value])
-      )
-    )
-  }
-
   return (
     <div className="App">
       <h1 className="title">Список постов</h1>
       <Form createPost={createPost} />
       <hr className="line" />
-      <div>
-        <MyInput 
-          placeholder="Поиск..." 
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-        <MySelect 
-          value={criteria}
-          sortPosts={sortPosts}
-          defaultValue="Сортировка"
-          options={[
-            {value: "title", label: "По заголовку"},
-            {value: "content", label: "По содержанию"}
-          ]}
-        />
-      </div>
-      {
-        !posts.length ? 
-          <h2 className="title-2">Посты не найдены!</h2> :
-          <Posts 
-            posts={posts} 
-            removePost={removePost}
-          />
-      }
+      <PostFilter 
+        filter={filter}
+        setFilter={setFilter}
+      />
+      <Posts 
+        posts={sortedAndSearchedPosts} 
+        removePost={removePost}
+      />
     </div>
   );
 }
