@@ -5,38 +5,15 @@ import Form from "./components/Form";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/modal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
+import { usePosts } from "./components/hooks/usePosts";
 
 export default function App() {
 
   const [posts, setPosts] = useState( [] )
   const [filter, setFilter] = useState( {sort: "", query: ""} )
-  const [visible, setVisible] = useState(false)
+  const [modal, setModal] = useState(false)
 
-  const sortedPosts = useMemo(
-    () => {
-      if (filter.sort) {
-        return (
-          [...posts].sort(
-            (a, b) => 
-              a[filter.sort].localeCompare(b[filter.sort]))
-        )
-      } else {
-        return posts
-      }
-    }, [filter.sort,  posts]
-  )
-
-  const sortedAndSearchedPosts = useMemo(
-    () => {
-      console.log('сработал')
-      return sortedPosts.filter(
-        post => 
-          post.title
-            .toLowerCase()
-            .includes(filter.query)
-      )
-    }, [filter.query, sortedPosts]
-  )
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   function createPost(post) {
     setPosts(
@@ -48,7 +25,7 @@ export default function App() {
         }
       ]
     )
-    setVisible(false)
+    setModal(false)
   }
 
   function removePost(id) {
@@ -62,22 +39,13 @@ export default function App() {
 
   return (
     <div className="App">
-      <MyButton 
-        style={{margin: "top"}}
-        onClick={
-          () => setVisible(true)
-        } 
-      >
-        Создать пользователя
+      <h1 className="title">Список постов</h1>
+      <MyButton onClick={() => setModal(true)}>
+        Создать пост
       </MyButton>
-      <MyModal 
-        visible={visible}
-        setVisible={setVisible}
-      >
+      <MyModal modal={modal} setModal={setModal}>
         <Form createPost={createPost} />
       </MyModal>
-      <h1 className="title">Список постов</h1>
-      <hr className="line" />
       <PostFilter 
         filter={filter}
         setFilter={setFilter}
