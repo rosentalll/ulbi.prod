@@ -19,7 +19,7 @@ export default function App() {
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
-  useEffect(async () => {
+  useEffect(() => {
     fetchPosts()
   }, [])
 
