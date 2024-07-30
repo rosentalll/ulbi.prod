@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { usePosts } from "./hooks/usePosts";
 
 import Posts from "./components/Posts";
@@ -9,15 +9,22 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/modal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import Loader from "./components/UI/loader/Loader";
+import Pagination from "./components/UI/pagination/Pagination";
 
 import PostService from "./API/PostService";
 import { useFetching } from "./hooks/useFetching";
+import { getPagesCount } from "./utils/pages";
 
 export default function App() {
 
   const [posts, setPosts] = useState( [] )
   const [filter, setFilter] = useState( {sort: "", query: ""} )
   const [modal, setModal] = useState(false)
+
+  const [totalPages, setTotalPages] = useState(0)
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
+
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   const [
@@ -25,9 +32,17 @@ export default function App() {
     isPostsLoading, 
     postError
   ] = useFetching(async () => {
-      const response = await PostService.getAll()
-      setPosts(response)
+        const response = await PostService.getAll(limit, page)
+        setPosts(response.data)
+        const totalCount = response.headers['x-total-count']
+        setTotalPages(
+          getPagesCount(totalCount, limit)
+        )
   })
+
+  function changePage(page) {
+    setPage(page)
+  }
 
   function createPost(post) {
     setPosts(
@@ -53,22 +68,24 @@ export default function App() {
 
   useEffect(() => {
     fetchPosts()
-  }, [])
+  }, [page])
 
   return (
     <div className="App">
       <h1 className="title">
         Список постов
       </h1>
-      <MyButton 
-        onClick={
-          () => setModal(true)
-        }>
-        Создать свой пост
-      </MyButton>
-      <MyButton onClick={fetchPosts}>
-        Посты с сервера
-      </MyButton>
+      <div style={{display: "flex", gap: "10px", marginBottom: "10px"}}>
+        <MyButton 
+          onClick={
+            () => setModal(true)
+          }>
+          Создать свой пост
+        </MyButton>
+        <MyButton onClick={fetchPosts}>
+          Посты с сервера
+        </MyButton>
+      </div>
       <MyModal 
         modal={modal} 
         setModal={setModal}
@@ -100,6 +117,11 @@ export default function App() {
             removePost={removePost}
           />
       }
+      <Pagination
+        totalPages={totalPages}
+        page={page} 
+        changePage={changePage}
+      />
     </div>
   );
 }

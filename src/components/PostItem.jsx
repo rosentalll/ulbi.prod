@@ -12,7 +12,7 @@ export default function PostItem(
     return (
         <li className="post" key={id}>
             <div className="post-content">
-                <strong>{title}</strong>
+                <strong>{`${id} ${title}`}</strong>
                 <p>{body}</p>
             </div>
             <div className="post-buttons">

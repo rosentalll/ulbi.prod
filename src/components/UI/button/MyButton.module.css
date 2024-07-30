@@ -8,4 +8,10 @@
     font-size: 14px;
     
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.myButton:hover {
+    color: white;
+    background-color: teal;
 }

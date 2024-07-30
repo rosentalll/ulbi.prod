@@ -3,6 +3,7 @@
 }
 
 .title {
+  margin: 20px 0;
   text-align: center;
 }
 
@@ -22,3 +23,38 @@
   border: 2px solid teal;
   margin: 15px 0 0 0;
 }
+
+.page__wrapper {
+  margin: 30px 15px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.page {
+  padding: 10px;
+  border: 1px solid teal;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page__current {
+  color: white;
+  background-color: rgb(179, 8, 8);
+  border-color: rgb(179, 8, 8);
+}
+
+.page:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
+}
+
+.page__current:hover {
+  background-color: rgb(135, 6, 6);
+  border-color: rgb(135, 6, 6);
+}
+
+
+
