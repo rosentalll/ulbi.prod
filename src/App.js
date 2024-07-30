@@ -1,14 +1,15 @@
 import "./App.css";
 
 import React, { useState, useEffect } from "react";
-import { usePosts } from "./components/hooks/usePosts";
+import { usePosts } from "./hooks/usePosts";
 
 import Posts from "./components/Posts";
 import Form from "./components/Form";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/modal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
-import axios from "axios";
+
+import PostService from "./API/PostService";
 
 
 export default function App() {
@@ -46,8 +47,8 @@ export default function App() {
   }
 
   async function fetchPosts() {
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/posts`)
-    setPosts(response.data)
+    const response = await PostService.getAll()
+    setPosts(response)
   }
 
   return (
