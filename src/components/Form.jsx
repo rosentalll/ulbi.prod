@@ -22,9 +22,9 @@ export default function Form({ createPost }) {
             />
             <MyInput 
                 placeholder="Введите контент"
-                value={post.content}
+                value={post.body}
                 onChange={
-                    (e) => setPost({...post, content: e.target.value})
+                    (e) => setPost({...post, body: e.target.value})
                 }
             />
             <MyButton>
