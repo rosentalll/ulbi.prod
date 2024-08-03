@@ -1,5 +1,10 @@
 import React from "react";
-import MyButton from "./UI/button/MyButton";
+import cl from "./PostItem.module.css"
+
+import { useNavigate } from "react-router-dom";
+
+import MyButton from "../UI/button/MyButton";
+
 
 export default function PostItem(
     { 
@@ -9,15 +14,19 @@ export default function PostItem(
         removePost 
     }
 ) {
+    const router = useNavigate()
     return (
-        <li className="post" key={id}>
-            <div className="post-content">
+        <li className={cl.post} key={id}>
+            <div>
                 <strong>{`${id} ${title}`}</strong>
                 <p>{body}</p>
             </div>
-            <div className="post-buttons">
+            <div className={cl.post__buttons}>
                 <MyButton onClick={() => removePost(id)}>
                     Удалить
+                </MyButton>
+                <MyButton onClick={() => router(`/posts/${id}`)}>
+                    Открыть
                 </MyButton>
             </div>
         </li>

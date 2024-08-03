@@ -15,15 +15,6 @@
   margin: 15px 0;
 }
 
-.post {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  border: 2px solid teal;
-  margin: 15px 0 0 0;
-}
-
 .page__wrapper {
   margin: 30px 15px;
   display: flex;
@@ -55,6 +46,3 @@
   background-color: rgb(135, 6, 6);
   border-color: rgb(135, 6, 6);
 }
-
-
-

@@ -1,5 +1,5 @@
 import React from "react";
-import PostItem from "./PostItem";
+import PostItem from "./PostItem/PostItem";
 
 export default function Posts({ posts, removePost }) {
     return (
